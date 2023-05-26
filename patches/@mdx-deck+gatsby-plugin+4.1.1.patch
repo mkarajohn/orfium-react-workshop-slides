@@ -1,0 +1,61 @@
+diff --git a/node_modules/@mdx-deck/gatsby-plugin/gatsby-node.js b/node_modules/@mdx-deck/gatsby-plugin/gatsby-node.js
+index 54db516..db8b651 100644
+--- a/node_modules/@mdx-deck/gatsby-plugin/gatsby-node.js
++++ b/node_modules/@mdx-deck/gatsby-plugin/gatsby-node.js
+@@ -5,6 +5,7 @@ const remarkPlugins = [
+   require('remark-images'),
+   require('remark-unwrap-images'),
+   require('remark-emoji'),
++  require('remark-import-partial'),
+ ]
+
+ exports.onPreBootstrap = ({}, opts = {}) => {
+diff --git a/node_modules/@mdx-deck/gatsby-plugin/src/split-slides.js b/node_modules/@mdx-deck/gatsby-plugin/src/split-slides.js
+index 0f1c447..95bd7d9 100644
+--- a/node_modules/@mdx-deck/gatsby-plugin/src/split-slides.js
++++ b/node_modules/@mdx-deck/gatsby-plugin/src/split-slides.js
+@@ -10,7 +10,28 @@ export default props => {
+   }
+   const notes = {}
+
+-  arr.forEach((child, i) => {
++  // This is for allowing importing MDX partials via
++  // this syntax using the remark plugin below.
++  //
++  // {@import ../../partials/qualityAssurance.mdx}
++  //
++  // https://github.com/dotansimha/remark-import-partial
++  const flattenedArray = arr.reduce((acc, child) => {
++    if (
++      child.props.originalType === 'p' &&
++      Array.isArray(child.props.children) &&
++      child.props.children.every(
++        (c) => c.type?.displayName === 'MDXCreateElement'
++      )
++    ) {
++      acc.push(...child.props.children)
++      return acc
++    }
++    acc.push(child)
++    return acc
++  }, [])
++
++  flattenedArray.forEach((child, i) => {
+     const {
+       originalType,
+       mdxType,
+@@ -41,12 +62,12 @@ export default props => {
+
+   let previousSplit = 0
+   splits.forEach((split, i) => {
+-    const children = [...arr.slice(previousSplit, split)]
++    const children = [...flattenedArray.slice(previousSplit, split)]
+     if (notes[i]) children.notes = notes[i]
+     slides.push(children)
+     previousSplit = split + 1
+   })
+-  const last = [...arr.slice(previousSplit)]
++  const last = [...flattenedArray.slice(previousSplit)]
+   if (notes[slides.length]) last.notes = notes[slides.length]
+   slides.push(last)
+
