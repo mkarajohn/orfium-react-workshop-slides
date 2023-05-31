@@ -81,14 +81,11 @@ function HooksAndLifeCycle() {
           <p>they always start with the word use</p>
         </Notes>
       </Slide>
-      <Slide data={{ 'code-surfer': '3' }}>
+      <CodeSurferSlide steps={steps}>
         <Notes>
           <p>Hooks must be called in the component's top level scope</p>
         </Notes>
-        <div className="r-stretch">
-          <CodeSurferSlide steps={steps} slideID="3" />
-        </div>
-      </Slide>
+      </CodeSurferSlide>
       <Slide type="tertiary" title={<span className="font-mono">useState</span>}>
         <Notes>
           <p>keeps state</p>
@@ -185,11 +182,7 @@ function HooksAndLifeCycle() {
           </CodeSlab>
         </div>
       </Slide>
-      <Slide data={{ 'code-surfer': '4' }}>
-        <div className="r-stretch">
-          <CodeSurferSlide steps={steps2} slideID="4" />
-        </div>
-      </Slide>
+      <CodeSurferSlide steps={steps2} />
       <Slide type="secondary" title="Building our own hooks">
         <div className="flex justify-center gap-8">
           <div className="flex w-1/2 shrink-0">

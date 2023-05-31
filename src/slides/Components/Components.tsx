@@ -97,7 +97,7 @@ function Components() {
           <p>We use JSX as a declarative way to write the Component's return value</p>
         </Notes>
       </Slide>
-      <Slide data={{ 'code-surfer': '2' }}>
+      <CodeSurferSlide steps={steps}>
         <Notes>
           <p>
             Mention that the code will pass through a compiler when we use a build tool like Vite
@@ -106,10 +106,7 @@ function Components() {
             Mention that components can also return <code>null</code>
           </p>
         </Notes>
-        <div className="r-stretch">
-          <CodeSurferSlide steps={steps} slideID="2" />
-        </div>
-      </Slide>
+      </CodeSurferSlide>
       <Slide type="secondary" title="How do I use my Component?">
         <Notes>
           <p>Write it</p>

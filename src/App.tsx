@@ -1,11 +1,11 @@
 import Particles from '@/components/Particles.tsx';
 import Slide from '@/components/Slide.tsx';
-import { useRevealJSInstance } from '@/providers/RevealJSProvider.tsx';
 import Components from '@/slides/Components';
 import HooksAndLifeCycle from '@/slides/HooksAndLifeCycle';
 import Introduction from '@/slides/Introduction';
 import Overview from '@/slides/Overview';
 import PropsAndState from '@/slides/PropsAndState';
+import { useRevealJSInstance } from 'react-revealjs-with-code-surfer';
 
 function App() {
   const revealInstance = useRevealJSInstance();

@@ -44,11 +44,7 @@ function Introduction() {
         </div>
       </Slide>
       <Slide type="secondary" title="Speaking of JavaScript..."></Slide>
-      <Slide data={{ 'code-surfer': '1' }}>
-        <div className="r-stretch">
-          <CodeSurferSlide steps={steps} slideID="1" />
-        </div>
-      </Slide>
+      <CodeSurferSlide steps={steps} />
     </Slide>
   );
 }

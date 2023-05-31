@@ -1,4 +1,3 @@
-import { RevealJSProvider } from '@/providers/RevealJSProvider.tsx';
 import 'prismjs';
 import 'prismjs/components/prism-jsx';
 import 'prismjs/components/prism-tsx';
@@ -9,6 +8,7 @@ import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
 import 'prismjs/plugins/line-numbers/prism-line-numbers.js';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { RevealJSProvider } from 'react-revealjs-with-code-surfer';
 import App from './App.tsx';
 import './index.css';
 

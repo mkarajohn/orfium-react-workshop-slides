@@ -1,6 +1,6 @@
 import { ExpandingWord } from '@/components/ExpandingWord.tsx';
-import { useRevealJSInstance } from '@/providers/RevealJSProvider.tsx';
 import { useEffect, useState } from 'react';
+import { useRevealJSInstance } from 'react-revealjs-with-code-surfer';
 import type RevealJS from 'reveal.js';
 
 export default function AnimatedTitle() {

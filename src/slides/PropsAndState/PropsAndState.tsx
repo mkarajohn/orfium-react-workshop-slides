@@ -94,17 +94,14 @@ function PropsAndState() {
           </CodeSlab>
         </div>
       </Slide>
-      <Slide data={{ 'code-surfer': '5' }}>
+      <CodeSurferSlide steps={steps}>
         <Notes>
           <p>
             mention that state updates do not happen immediatelly, rather they enter a queue where
             react will later process them, batch them and apply them
           </p>
         </Notes>
-        <div className="r-stretch">
-          <CodeSurferSlide steps={steps} slideID="5" />
-        </div>
-      </Slide>
+      </CodeSurferSlide>
       <Slide type="secondary" title="A few things about rendering in React"></Slide>
       <Slide data={{ transition: 'slide-in fade-out' }}>
         <div className="mx-auto h-full w-2/3">
