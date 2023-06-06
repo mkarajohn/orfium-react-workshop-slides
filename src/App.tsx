@@ -1,5 +1,6 @@
 import Particles from '@/components/Particles.tsx';
 import Slide from '@/components/Slide.tsx';
+import Unused from '@/components/Unused.tsx';
 import Components from '@/slides/Components';
 import HooksAndLifeCycle from '@/slides/HooksAndLifeCycle';
 import Introduction from '@/slides/Introduction';
@@ -12,6 +13,7 @@ function App() {
 
   return (
     <>
+      <Unused />
       <div
         className={`reveal transition-opacity delay-500 ${
           revealInstance ? 'opacity-100' : 'opacity-0'
