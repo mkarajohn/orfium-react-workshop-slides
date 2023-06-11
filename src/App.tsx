@@ -24,7 +24,7 @@ function App() {
           <PropsAndState />
           <HooksAndLifeCycle />
           <Slide
-            data={{ transition: 'fade' }}
+            data={{ transition: 'convex' }}
             title={<em className="handwriting text-8xl">Fin</em>}
           ></Slide>
         </div>

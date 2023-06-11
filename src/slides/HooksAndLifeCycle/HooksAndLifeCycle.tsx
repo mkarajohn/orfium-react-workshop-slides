@@ -15,7 +15,7 @@ import { steps, steps2 } from '@/slides/HooksAndLifeCycle/code-surfer-steps.ts';
 
 function HooksAndLifeCycle() {
   return (
-    <Slide data={{ transition: 'convex-in fade-out' }}>
+    <Slide data={{ transition: 'convex' }}>
       <Slide
         title={
           <>
