@@ -274,9 +274,6 @@ function Particles() {
         pointsCloudRotationRate: pointsCloudRotationRate,
         particleCount: PARTICLE_COUNT,
         cameraDistance: CAMERA_Z,
-        minDistance: 150,
-        limitConnections: false,
-        maxConnections: 20,
       };
 
       const gui = new GUI();
