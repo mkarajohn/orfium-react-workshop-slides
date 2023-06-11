@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { Vector3 } from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 import Stats from 'three/addons/libs/stats.module.js';
 
 function createCircleTexture(color: string, size: number) {
@@ -54,6 +55,9 @@ function Particles() {
       return;
     }
 
+    let height = window.innerHeight;
+    let width = window.innerWidth;
+    let aspectRatio = width / height; // aspect ratio — Camera frustum aspect ratio.
     const container = document.getElementById('particles') as HTMLElement;
 
     // In geometry, a frustum (plural: frusta or frustums)
@@ -61,62 +65,57 @@ function Particles() {
     // that lies between two parallel planes cutting it. - wikipedia.
 
     const FOV = 75; // FOV — Camera frustum vertical field of view.
-    const HEIGHT = window.innerHeight;
-    const WIDTH = window.innerWidth;
-    const ASPECT_RATIO = WIDTH / HEIGHT; // aspect ratio — Camera frustum aspect ratio.
     const NEAR_PLANE = 1; // near plane — Camera frustum near plane.
     const FAR_PLANE = 3000; // far plane — Camera frustum far plane.
-    const CAMERA_Z = FAR_PLANE / 3;
+    const CAMERA_Z = FAR_PLANE / 6;
     const FOG_HEX = 0x000000;
     const FOG_DENSITY = 0.0007;
     const PARTICLE_COUNT = 10000;
-    const SPHERE_RADIUS = CAMERA_Z * 1.4;
+    const SPHERE_RADIUS = CAMERA_Z * 2.4;
+    const X_AXIS = new Vector3(1, 0, 0);
+    const Y_AXIS = new Vector3(0, 1, 0);
+    const Z_AXIS = new Vector3(0, 0, 1);
 
-    // 'To actually be able to display anything with Three.js, we need three things:
-    // A scene, a camera, and a renderer, so we can render the scene with the camera.'
-    // - https://threejs.org/docs/#Manual/Introduction/Creating_a_scene
     let camera: THREE.PerspectiveCamera,
       scene: THREE.Scene,
       renderer: THREE.WebGLRenderer,
       stats: Stats;
 
+    // "particles", and more specifically the "positionVector" is another way to
+    // say "vertices". These vertices then get added to the particlesGeometry
+    const particles: { positionVector: Vector3; velocityVector: Vector3 }[] = [];
     let pointsCloud: THREE.Points;
-    let particlePositions: Float32Array;
-    let particlesData: { positionVector: Vector3; velocityVector: Vector3 }[];
+    let pointsCloudRotationRate = 0.002;
 
-    let mouseX = 0,
-      mouseY = 0;
-    let windowHalfX = WIDTH / 2;
-    let windowHalfY = HEIGHT / 2;
-
-    let rotationRate = 0.002;
+    let mouseDx = 0,
+      mouseDy = 0;
 
     status.current = 'initializing';
-    initStats();
     init();
+    initStats();
+    initGUI();
     status.current = 'initialized';
     setupDOM();
     animate();
 
     function init() {
       scene = new THREE.Scene();
-      camera = new THREE.PerspectiveCamera(FOV, ASPECT_RATIO, NEAR_PLANE, FAR_PLANE); // https://threejs.org/docs/#Reference/Cameras/PerspectiveCamera
+      camera = new THREE.PerspectiveCamera(FOV, aspectRatio, NEAR_PLANE, FAR_PLANE);
       renderer = new THREE.WebGLRenderer();
-
-      new OrbitControls(camera, renderer.domElement);
 
       addParticles();
       scene.fog = new THREE.FogExp2(FOG_HEX, FOG_DENSITY);
-      camera.position.z = CAMERA_Z / 2;
-      renderer.setSize(WIDTH, HEIGHT); /*	Full screen	*/
+      camera.position.z = CAMERA_Z;
+      renderer.setSize(width, height); /*	Full screen	*/
       renderer.setPixelRatio(window.devicePixelRatio); /*	Probably 1; unless you're fancy.	*/
+
+      container.appendChild(renderer.domElement);
     }
 
     function addParticles() {
       const circleTexture = createCircleTexture(`rgba(255,255,255, 0.7`, 256);
       const particlesGeometry = new THREE.BufferGeometry();
-      particlePositions = new Float32Array(PARTICLE_COUNT * 3);
-      particlesData = [];
+      const particlePositions = new Float32Array(PARTICLE_COUNT * 3);
       const particleMaterials: THREE.PointsMaterialParameters = {
         transparent: true,
         depthWrite: true,
@@ -127,7 +126,7 @@ function Particles() {
       for (let i = 0; i < PARTICLE_COUNT; i++) {
         const positionVector = setRandomPointInSphere(SPHERE_RADIUS);
 
-        particlesData.push({
+        particles.push({
           positionVector,
           velocityVector: new THREE.Vector3(
             -1 + Math.random() * 2,
@@ -161,15 +160,18 @@ function Particles() {
     }
 
     function initStats() {
+      const params = new URLSearchParams(window.location.search);
+      if (!params.has('stats')) {
+        return;
+      }
+
       stats = new Stats();
+      container.appendChild(stats.dom);
     }
 
     function setupDOM() {
       renderer.domElement.classList.add('transition-opacity');
       renderer.domElement.classList.add('fade-in-animation');
-      container.appendChild(renderer.domElement);
-
-      container.appendChild(stats.dom);
 
       // Event Listeners
       window.addEventListener('resize', onWindowResize, false);
@@ -180,23 +182,28 @@ function Particles() {
     function animate() {
       requestAnimationFrame(animate);
       render();
-      stats.update();
+      if (stats) {
+        stats.update();
+      }
     }
 
     function render() {
-      pointsCloud.rotateOnAxis(new Vector3(0, 1, 0), rotationRate);
+      pointsCloud.rotateOnAxis(X_AXIS, toRadians(mouseDx * 0.01) || 0);
+      pointsCloud.rotateOnAxis(Y_AXIS, toRadians(mouseDy * 0.01) || pointsCloudRotationRate);
 
       for (let i = 0; i < PARTICLE_COUNT; i++) {
         // get the particle
-        const { positionVector, velocityVector } = particlesData[i];
+        const { positionVector, velocityVector } = particles[i];
 
+        // move it by its velocity vector
         positionVector.add(velocityVector);
 
+        // if new position places it outside the sphere negate its velocity
         if (positionVector.length() > SPHERE_RADIUS) {
           velocityVector.negate();
         }
 
-        // dump to particlePositions array
+        // update the particles position array of the pointsCloud geometry
         positionVector.toArray(pointsCloud.geometry.attributes.position.array, i * 3);
       }
 
@@ -206,39 +213,83 @@ function Particles() {
     }
 
     function onWindowResize() {
-      windowHalfX = window.innerWidth / 2;
-      windowHalfY = window.innerHeight / 2;
+      height = window.innerHeight;
+      width = window.innerWidth;
+      aspectRatio = width / height;
 
-      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.aspect = aspectRatio;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(width, height);
     }
 
     let timeout: NodeJS.Timer;
-    const originalRotationRate = rotationRate;
+    const originalRotationRate = pointsCloudRotationRate;
 
     function onKeyDown(e: KeyboardEvent) {
       clearTimeout(timeout);
+      mouseDx = 0;
+      mouseDy = 0;
 
       if (e.key === 'ArrowLeft') {
-        rotationRate = toRadians(1);
+        pointsCloudRotationRate = toRadians(1);
       }
 
       if (e.key === 'ArrowRight') {
-        rotationRate = -toRadians(1);
+        pointsCloudRotationRate = -toRadians(1);
       }
 
       timeout = setTimeout(() => {
-        rotationRate = rotationRate < 0 ? -originalRotationRate : originalRotationRate;
-        // rotationRate = originalRotationRate;
+        pointsCloudRotationRate =
+          pointsCloudRotationRate < 0 ? -originalRotationRate : originalRotationRate;
+        // pointsCloudRotationRate = originalRotationRate;
 
         clearTimeout(timeout);
       }, 700);
     }
 
+    let prevMouseX = 0;
+    let prevMouseY = 0;
+    let currentMouseX = 0;
+    let currentMouseY = 0;
+
     function __onDocumentMouseMove(e: MouseEvent) {
-      mouseX = e.clientX - windowHalfX;
-      mouseY = e.clientY - windowHalfY;
+      prevMouseX = currentMouseX;
+      currentMouseX = e.clientX;
+      prevMouseY = currentMouseY;
+      currentMouseY = e.clientY;
+
+      mouseDx = prevMouseX - currentMouseX;
+      mouseDy = prevMouseY - currentMouseY;
+    }
+
+    function initGUI() {
+      const params = new URLSearchParams(window.location.search);
+      if (!params.has('controls')) {
+        return;
+      }
+
+      new OrbitControls(camera, renderer.domElement);
+
+      const controls = {
+        pointsCloudRotationRate: pointsCloudRotationRate,
+        particleCount: PARTICLE_COUNT,
+        cameraDistance: CAMERA_Z,
+        minDistance: 150,
+        limitConnections: false,
+        maxConnections: 20,
+      };
+
+      const gui = new GUI();
+
+      gui.add(controls, 'pointsCloudRotationRate').onChange(function (value: string) {
+        pointsCloudRotationRate = Number(value);
+      });
+      gui.add(controls, 'cameraDistance').onChange(function (value: string) {
+        camera.position.z = Number(value);
+      });
+      gui.add(controls, 'particleCount').onChange(function (value: string) {
+        pointsCloud.geometry.setDrawRange(0, Number(value));
+      });
     }
   }, []);
 
