@@ -78,11 +78,11 @@ function Particles() {
       const FOV = 75; // FOV — Camera frustum vertical field of view.
       const NEAR_PLANE = 1; // near plane — Camera frustum near plane.
       const FAR_PLANE = 3000; // far plane — Camera frustum far plane.
-      const CAMERA_Z = FAR_PLANE / 6;
+      const CAMERA_Z = 500;
       const FOG_HEX = 0x000000;
       const FOG_DENSITY = 0.0007;
       const PARTICLE_COUNT = 10000;
-      const SPHERE_RADIUS = CAMERA_Z * 2.4;
+      const SPHERE_RADIUS = 1500;
       const POINTS_CLOUD_DEFAULT_ROTATION_RATE = 0.002;
       const X_AXIS = new Vector3(1, 0, 0);
       const Y_AXIS = new Vector3(0, 1, 0);
@@ -198,7 +198,10 @@ function Particles() {
         });
 
         onRevealEvent('slidetransitionend', () => {
-          pointsCloudCurrentRotationRate = toRadians(POINTS_CLOUD_DEFAULT_ROTATION_RATE);
+          pointsCloudCurrentRotationRate =
+            pointsCloudCurrentRotationRate > 0
+              ? POINTS_CLOUD_DEFAULT_ROTATION_RATE
+              : -POINTS_CLOUD_DEFAULT_ROTATION_RATE;
         });
 
         // Event Listeners
@@ -237,6 +240,7 @@ function Particles() {
           positionVector.toArray(pointsCloud.geometry.attributes.position.array, i * 3);
         }
 
+        // mark the geometry vertex positions as needing to be updated during the next render
         pointsCloud.geometry.attributes.position.needsUpdate = true;
 
         renderer.render(scene, camera);
