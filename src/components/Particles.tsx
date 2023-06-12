@@ -124,13 +124,14 @@ function Particles() {
       }
 
       function addParticles() {
-        const circleTexture = createCircleTexture(`rgba(255,255,255, 0.7`, 256);
+        const circleTexture = createCircleTexture(`rgba(255,255,255, 0.9`, 256);
         const particlesGeometry = new THREE.BufferGeometry();
         const particlePositions = new Float32Array(PARTICLE_COUNT * 3);
         const particleMaterials: THREE.PointsMaterialParameters = {
           transparent: true,
-          depthWrite: true,
+          depthWrite: false,
           map: circleTexture,
+          sizeAttenuation: true,
         };
 
         // Particle positions
