@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 function ContentWrapper(props: { children: ReactNode; size?: 'normal' | 'small' | 'full' }) {
   const { children, size = 'normal' } = props;

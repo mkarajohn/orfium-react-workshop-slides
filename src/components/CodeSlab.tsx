@@ -1,5 +1,5 @@
 import HighlightedCode from '@/components/HighlightedCode.tsx';
-import { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 export type Props = {
   children: string;

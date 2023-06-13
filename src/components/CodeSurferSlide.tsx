@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
 import {
-  InputStep,
   SurferCode,
   SurferSlide,
   SurferSlideIDProvider,
+  type InputStep,
 } from 'react-revealjs-with-code-surfer';
 
 export type Props = {

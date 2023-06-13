@@ -1,4 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import fShader from '@/shaders/fragment-shader.glsl';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import vShader from '@/shaders/vertex-shader.glsl';
 import { useEffect, useRef } from 'react';
 import { useRevealJSInstance } from 'react-revealjs-with-code-surfer';
@@ -7,26 +11,6 @@ import { Vector3 } from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 import Stats from 'three/addons/libs/stats.module.js';
-
-function createCircleTexture(color: string, size: number) {
-  const matCanvas = document.createElement('canvas') as HTMLCanvasElement;
-  matCanvas.width = matCanvas.height = size;
-  const matContext = matCanvas.getContext('2d') as CanvasRenderingContext2D;
-  const texture = new THREE.Texture(matCanvas); // create texture object from canvas.
-  const center = size / 2; // Draw a circle
-
-  matContext.beginPath();
-  matContext.arc(center, center, size / 2, 0, 2 * Math.PI, false);
-  matContext.closePath();
-  matContext.fillStyle = color;
-  matContext.fill();
-
-  // need to set needsUpdate
-  texture.needsUpdate = true;
-
-  // return a texture made from the canvas
-  return texture;
-}
 
 function setRandomPointInSphere(radius: number): THREE.Vector3 {
   const vertex = new THREE.Vector3(
@@ -41,11 +25,6 @@ function setRandomPointInSphere(radius: number): THREE.Vector3 {
   return vertex;
 }
 
-function randomIntFromRange(min: number, max: number) {
-  // min and max included
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
 function toRadians(degrees: number) {
   return degrees * (Math.PI / 180);
 }
@@ -54,37 +33,6 @@ const uniforms = {
   uTime: { value: 0 },
   uRadius: { value: 1500 },
 };
-
-const vShaderOld = `
-uniform float uTime;
-uniform int uRadius;
-
-attribute vec3 velocity;
-
-varying vec3 vPosition;
-
-void main() {
-  vPosition = position;
-  vec3 vel = velocity * uTime;
-  float size = 100.0;
-  
-  if (length(position) > float(uRadius)) {
-    vel = vel * -1.0;
-  }
-  
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(position + vel, 1.0);
-  gl_PointSize = size * (1.0 / vPosition.z);
-}`;
-
-const fShaderOld = `
-varying vec3 vPosition;
-
-void main() {
-  vec3 color = vec3(1.0);
-  float circle = 1.0 - step(0.5, length(vPosition.x));
-  
-  gl_FragColor = vec4(color, 0.7) * circle;
-}`;
 
 const shaderMaterial = new THREE.ShaderMaterial({
   uniforms,
@@ -126,8 +74,8 @@ function ParticlesShaders() {
       const CAMERA_Z = 500;
       const NEAR_PLANE = 1; // near plane — Camera frustum near plane.
       const FAR_PLANE = 3000; // far plane — Camera frustum far plane.
-      const FOG_HEX = 0x000000;
-      const FOG_DENSITY = 0.0007;
+      // const FOG_HEX = 0x000000;
+      // const FOG_DENSITY = 0.0007;
       const PARTICLE_COUNT = 10000;
       const SPHERE_RADIUS = 1500;
       const POINTS_CLOUD_DEFAULT_ROTATION_RATE = 0.002;
