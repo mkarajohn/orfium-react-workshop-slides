@@ -1,4 +1,3 @@
-import type { InputStep } from '@/components/CodeSurferSlide.tsx';
 import {
   jsx1,
   jsx2,
@@ -7,6 +6,7 @@ import {
   jsx5,
   jsx6,
 } from '@/slides/Components/code-examples/code-surfer.ts';
+import type { InputStep } from 'react-revealjs-with-code-surfer';
 
 export const steps: InputStep[] = [
   {
