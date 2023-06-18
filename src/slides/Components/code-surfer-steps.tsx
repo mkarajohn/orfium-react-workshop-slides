@@ -42,7 +42,7 @@ export const steps: InputStep[] = [
     title: 'Some JSX rules',
     subtitle: (
       <>
-        Between <code>{}</code> we are writing normal JavaScript
+        Between <code>&#123;&#125;</code> we are writing normal JavaScript
       </>
     ),
     lang: 'jsx',

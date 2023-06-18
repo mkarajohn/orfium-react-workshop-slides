@@ -20,6 +20,18 @@ export const dont = `function Component() {
   );
 }`;
 
+export const dont2 = `function Component() {
+  if(condition) {
+    useHook(); // ❌
+  }
+
+  return (
+    <button onClick={handleClick}>
+      Click me
+    </button>
+  );
+}`;
+
 export const component = `import { useEffect } from 'react';
 
 function MyComponent(props) {
@@ -28,10 +40,10 @@ function MyComponent(props) {
       alert(props.someValue); 
     }
     
-    window.addEventListener('onclick', clickHandler);
+    window.addEventListener('click', clickHandler);
 
     return function cleanup() {
-      window.removeEventListener('onclick', clickHandler);
+      window.removeEventListener('click', clickHandler);
     }
   }, [props.someValue]);
 
@@ -48,7 +60,7 @@ export const component2 = `import { useEffect } from 'react';
 function MyComponent(props) {
   useEffect(function() {
     function clickHandler() {/*...*/}
-    window.addEventListener('onclick', clickHandler);
+    window.addEventListener('click', clickHandler);
     return function cleanup() {/*...*/}
   }, [props.someValue]);
 
@@ -66,7 +78,7 @@ function MyComponent(props) {
   useEffect(function() {
     function clickHandler() {/*...*/}
     
-    window.addEventListener('onclick', clickHandler);
+    window.addEventListener('click', clickHandler);
 
     return function cleanup() {/*...*/}
   }, [props.someValue]);

@@ -3,6 +3,7 @@ import {
   component2,
   component3,
   dont,
+  dont2,
   doth,
 } from '@/slides/HooksAndLifeCycle/code-examples/code-surfer.ts';
 
@@ -22,6 +23,14 @@ export const steps = [
     lang: 'jsx',
     showNumbers: true,
     focus: undefined,
+  },
+  {
+    code: dont2,
+    title: "Don't",
+    subtitle: undefined,
+    lang: 'jsx',
+    showNumbers: true,
+    focus: '2:4',
   },
 ];
 

@@ -1,4 +1,3 @@
-import bears from '@/assets/berenstain.webp';
 import salesman from '@/assets/salesman.png';
 import triggered from '@/assets/yamero.png';
 import AnimatedTitle from '@/components/AnimatedTitle.tsx';
@@ -97,9 +96,6 @@ function Components() {
           </p>
           <p>We use JSX as a declarative way to write the Component's return value</p>
         </Notes>
-      </Slide>
-      <Slide data={{ transition: 'zoom-in slide-out' }}>
-        <img className="mx-auto" src={bears} />
       </Slide>
       <CodeSurferSlide steps={steps}>
         <Notes>

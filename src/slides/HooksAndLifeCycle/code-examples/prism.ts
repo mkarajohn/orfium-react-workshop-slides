@@ -64,10 +64,10 @@ function MyButton(props) {
       alert('hi'); 
     }
     
-    window.addEventListener('onclick', clickHandler);
+    window.addEventListener('click', clickHandler);
 
     return function cleanup() {
-      window.removeEventListener('onclick', clickHandler);
+      window.removeEventListener('click', clickHandler);
     }
   }, []);
   
