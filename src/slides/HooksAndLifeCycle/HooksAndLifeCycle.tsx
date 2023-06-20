@@ -11,7 +11,7 @@ import {
   componentWithUseEffect,
   customHook,
 } from '@/slides/HooksAndLifeCycle/code-examples/prism.ts';
-import { steps, steps2 } from '@/slides/HooksAndLifeCycle/code-surfer-steps.ts';
+import { steps } from '@/slides/HooksAndLifeCycle/code-surfer-steps.ts';
 
 function HooksAndLifeCycle() {
   return (
@@ -99,7 +99,7 @@ function HooksAndLifeCycle() {
           </p>
         </Notes>
         <div className="mx-auto w-1/2">
-          <CodeSlab language="jsx" highlightLines="1,4,10">
+          <CodeSlab language="jsx" highlightLines="1,4,9,12">
             {componentWithState}
           </CodeSlab>
         </div>
@@ -182,7 +182,7 @@ function HooksAndLifeCycle() {
           </CodeSlab>
         </div>
       </Slide>
-      <CodeSurferSlide steps={steps2} />
+      {/*<CodeSurferSlide steps={steps2} />*/}
       <Slide type="secondary" title="Building our own hooks">
         <div className="flex justify-center gap-8">
           <div className="flex w-1/2 shrink-0">

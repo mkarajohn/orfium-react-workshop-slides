@@ -1,17 +1,16 @@
 export const componentWithState = `import { useState } from 'react';
 
-function Counter() {
+function MyButton() {
   const [count, setCount] = useState(0);
   
   return (
-    <div>
-      <div>Pressed {count} times</div>
-      <button onClick={function() {
-          setCount(count + 1);
-      }}>
-        Increment
-      </button>
-    </div>
+    <button 
+      onClick={function() {
+        setCount(count + 1);
+      }}
+    >
+      Pressed {count} times
+    </button>
   )
 }`;
 

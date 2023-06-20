@@ -18,7 +18,6 @@ import {
   promise1,
   promise2,
   promise3,
-  switchStatement,
   tern1,
   tern2,
 } from '@/slides/Introduction/code-examples/code-surfer.ts';
@@ -195,16 +194,16 @@ export const steps = [
     showNumbers: true,
     focus: '6',
   },
-  {
-    code: switchStatement,
-    title: (
-      <>
-        Native <code>switch</code> statements 💩
-      </>
-    ),
-    subtitle: undefined,
-    lang: 'js',
-    showNumbers: true,
-    focus: undefined,
-  },
+  // {
+  //   code: switchStatement,
+  //   title: (
+  //     <>
+  //       Native <code>switch</code> statements 💩
+  //     </>
+  //   ),
+  //   subtitle: undefined,
+  //   lang: 'js',
+  //   showNumbers: true,
+  //   focus: undefined,
+  // },
 ];

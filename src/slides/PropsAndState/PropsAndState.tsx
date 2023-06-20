@@ -89,7 +89,7 @@ function PropsAndState() {
       <Slide>
         <div className="mb-8">A simple Component using state</div>
         <div className="mx-auto flex w-1/2 justify-center">
-          <CodeSlab language="jsx" highlightLines="1,4,8-11">
+          <CodeSlab language="jsx" highlightLines="1,4,8-10,12">
             {componentWithState}
           </CodeSlab>
         </div>

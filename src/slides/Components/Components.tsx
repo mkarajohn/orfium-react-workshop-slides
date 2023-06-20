@@ -125,7 +125,7 @@ function Components() {
             </CodeSlab>
           </div>
           <div data-fragment-index="3" className="fragment fade-up flex w-1/3 shrink-0">
-            <CodeSlab noScroll language="jsx" highlightLines="3,7" header="index.jsx">
+            <CodeSlab noScroll language="jsx" highlightLines="3,7" header="main.jsx">
               {indexCode}
             </CodeSlab>
           </div>
